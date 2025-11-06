@@ -1,0 +1,72 @@
+[
+  {
+    "id": 8135428,
+    "name": "Daevika Mehra",
+    "email": "daevika_mehra@gottlieb.example",
+    "gender": "female",
+    "status": "inactive"
+  },
+  {
+    "id": 8135427,
+    "name": "Gaurang Iyengar",
+    "email": "iyengar_gaurang@barton-boyer.test",
+    "gender": "female",
+    "status": "active"
+  },
+  {
+    "id": 8135426,
+    "name": "Chinmayanand Guha",
+    "email": "chinmayanand_guha@rolfson.test",
+    "gender": "female",
+    "status": "inactive"
+  },
+  {
+    "id": 8135425,
+    "name": "Daevi Tagore",
+    "email": "tagore_daevi@kautzer.example",
+    "gender": "female",
+    "status": "active"
+  },
+  {
+    "id": 8135424,
+    "name": "Bhargava Marar",
+    "email": "marar_bhargava@skiles.test",
+    "gender": "female",
+    "status": "active"
+  },
+  {
+    "id": 8135421,
+    "name": "Fr. Vimala Johar",
+    "email": "vimala_fr_johar@dickinson.example",
+    "gender": "male",
+    "status": "inactive"
+  },
+  {
+    "id": 8135420,
+    "name": "Anilaabh Prajapat",
+    "email": "anilaabh_prajapat@marquardt.example",
+    "gender": "female",
+    "status": "inactive"
+  },
+  {
+    "id": 8135419,
+    "name": "Prof. Varalakshmi Singh",
+    "email": "varalakshmi_singh_prof@bergstrom.test",
+    "gender": "female",
+    "status": "active"
+  },
+  {
+    "id": 8135418,
+    "name": "Siddhran Bhattathiri",
+    "email": "bhattathiri_siddhran@zemlak-hagenes.example",
+    "gender": "female",
+    "status": "inactive"
+  },
+  {
+    "id": 8135417,
+    "name": "Veda Pothuvaal MD",
+    "email": "pothuvaal_veda_md@yundt.test",
+    "gender": "female",
+    "status": "active"
+  }
+]
