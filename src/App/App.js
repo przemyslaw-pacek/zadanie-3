@@ -35,7 +35,11 @@ function App() {
         <>
           <Header>Lista użytkowników</Header>
           <Search users={users} onFiltered={setFilteredUsers} />
-          <UsersList users={filteredUsers} />
+          {filteredUsers.length === 0 ? (
+            <Header $error>Brak wyników</Header>
+          ) : (
+            <UsersList users={filteredUsers} />
+          )}
         </>
       )}
     </>
