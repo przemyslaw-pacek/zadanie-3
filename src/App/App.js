@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getUsers } from "./api";
 import { Header } from "./styled";
@@ -6,8 +6,7 @@ import Search from "./Search";
 import UsersList from "./UsersList";
 
 function App() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const searchUser = searchParams.get("szukaj") || "";
+  const [filteredUsers, setFilteredUsers] = useState([]);
 
   const {
     isLoading,
@@ -16,29 +15,8 @@ function App() {
   } = useQuery({
     queryKey: ["users"],
     queryFn: getUsers,
-    retry: false,
+    retry: true,
   });
-
-  const filteredUsers = users
-    ? users.filter((user) => {
-        const query = searchUser.toLowerCase();
-        return (
-          user.name.toLowerCase().includes(query) ||
-          user.email.toLowerCase().includes(query) ||
-          user.gender.toLowerCase().includes(query) ||
-          user.status.toLowerCase().includes(query) ||
-          String(user.id).includes(query) // 👈 id też porównujemy jako string
-        );
-      })
-    : [];
-
-  function onSearchChange(value) {
-    if (value) {
-      setSearchParams({ szukaj: value });
-    } else {
-      setSearchParams({});
-    }
-  }
 
   return (
     <>
@@ -56,8 +34,8 @@ function App() {
       ) : (
         <>
           <Header>Lista użytkowników</Header>
-          <Search value={searchUser} onChange={onSearchChange} />
-          <UsersList users={users} filteredUsers={filteredUsers} />
+          <Search users={users} onFiltered={setFilteredUsers} />
+          <UsersList users={filteredUsers} />
         </>
       )}
     </>
