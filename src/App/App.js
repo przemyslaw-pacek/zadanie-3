@@ -1,8 +1,14 @@
+import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getUsers } from "./api";
-import { Header, Table, TableData, TableHeader, TableRow } from "./styled";
+import { Header } from "./styled";
+import Search from "./Search";
+import UsersList from "./UsersList";
 
 function App() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchUser = searchParams.get("szukaj") || "";
+
   const {
     isLoading,
     error,
@@ -12,6 +18,27 @@ function App() {
     queryFn: getUsers,
     retry: false,
   });
+
+  const filteredUsers = users
+    ? users.filter((user) => {
+        const query = searchUser.toLowerCase();
+        return (
+          user.name.toLowerCase().includes(query) ||
+          user.email.toLowerCase().includes(query) ||
+          user.gender.toLowerCase().includes(query) ||
+          user.status.toLowerCase().includes(query) ||
+          String(user.id).includes(query) // 👈 id też porównujemy jako string
+        );
+      })
+    : [];
+
+  function onSearchChange(value) {
+    if (value) {
+      setSearchParams({ szukaj: value });
+    } else {
+      setSearchParams({});
+    }
+  }
 
   return (
     <>
@@ -29,32 +56,8 @@ function App() {
       ) : (
         <>
           <Header>Lista użytkowników</Header>
-
-          {users && (
-            <Table>
-              <thead>
-                <TableRow $header>
-                  <TableHeader>id</TableHeader>
-                  <TableHeader>name</TableHeader>
-                  <TableHeader>email</TableHeader>
-                  <TableHeader>gender</TableHeader>
-                  <TableHeader>status</TableHeader>
-                </TableRow>
-              </thead>
-
-              <tbody>
-                {users.map((user) => (
-                  <TableRow key={user.id}>
-                    <TableData>{user.id}</TableData>
-                    <TableData>{user.name}</TableData>
-                    <TableData>{user.email}</TableData>
-                    <TableData>{user.gender}</TableData>
-                    <TableData>{user.status}</TableData>
-                  </TableRow>
-                ))}
-              </tbody>
-            </Table>
-          )}
+          <Search value={searchUser} onChange={onSearchChange} />
+          <UsersList users={users} filteredUsers={filteredUsers} />
         </>
       )}
     </>
