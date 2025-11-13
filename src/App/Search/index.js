@@ -1,6 +1,5 @@
 import { useSearchParams } from "react-router-dom";
 import { Input, Wrapper } from "./styled";
-
 import { useEffect } from "react";
 
 function Search({ users, onFiltered }) {
