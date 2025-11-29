@@ -43,16 +43,7 @@ function UsersList({ users }: UsersListProps) {
 
   const renderCell = (user: User, field: keyof User) => {
     const isEditing = edit.id === user.id && edit.field === field;
-    if (!isEditing)
-      return (
-        <span
-          onClick={() =>
-            setEdit({ id: user.id, field, value: String(user[field]) })
-          }
-        >
-          {String(user[field])}
-        </span>
-      );
+    if (!isEditing) return String(user[field]);
 
     if (field === "gender" || field === "status") {
       const options =
@@ -64,6 +55,7 @@ function UsersList({ users }: UsersListProps) {
             setEdit((prev) => ({ ...prev, value: target.value }))
           }
           onBlur={saveEdit}
+          onClick={(event) => event.stopPropagation()}
           autoFocus
         >
           {options.map((optionValue) => (
@@ -80,6 +72,7 @@ function UsersList({ users }: UsersListProps) {
           setEdit((prev) => ({ ...prev, value: target.value }))
         }
         onBlur={saveEdit}
+        onClick={(event) => event.stopPropagation()}
         onKeyDown={(event) => event.key === "Enter" && saveEdit()}
         autoFocus
       />
@@ -102,9 +95,19 @@ function UsersList({ users }: UsersListProps) {
         {users.map((user) => (
           <TableRow key={user.id}>
             <TableData>{user.id}</TableData>
+
             {(["name", "email", "gender", "status"] as (keyof User)[]).map(
               (fieldName) => (
-                <TableData key={fieldName}>
+                <TableData
+                  key={fieldName}
+                  onClick={() =>
+                    setEdit({
+                      id: user.id,
+                      field: fieldName,
+                      value: String(user[fieldName]),
+                    })
+                  }
+                >
                   {renderCell(user, fieldName)}
                 </TableData>
               )
