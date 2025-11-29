@@ -4,9 +4,10 @@ import { getUsers } from "./api";
 import { Header } from "./styled";
 import Search from "./Search";
 import UsersList from "./UsersList";
+import { User } from "./types";
 
 function App() {
-  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
 
   const {
     isLoading,

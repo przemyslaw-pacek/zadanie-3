@@ -1,3 +1,5 @@
+import { User } from "./types";
+
 const url_api = "https://gorest.co.in/public/v2/users";
 
 const token =
@@ -6,7 +8,7 @@ const token =
 export const getUsers = () =>
   fetch(url_api).then((response) => response.json());
 
-export const editUser = (id, editData) =>
+export const editUser = (id: number, editData: Partial<User>) =>
   fetch(`${url_api}/${id}`, {
     method: "PATCH",
     headers: {

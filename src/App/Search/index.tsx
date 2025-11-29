@@ -1,12 +1,18 @@
 import { useSearchParams } from "react-router-dom";
 import { Input, Wrapper } from "./styled";
 import { useEffect } from "react";
+import { User } from "../types";
 
-function Search({ users, onFiltered }) {
+interface SearchProps {
+  users: User[];
+  onFiltered: (users: User[]) => void;
+}
+
+function Search({ users, onFiltered }: SearchProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchUser = searchParams.get("szukaj") || "";
 
-  function onChange(value) {
+  function onChange(value: string) {
     if (value) setSearchParams({ szukaj: value });
     else setSearchParams({});
   }

@@ -2,15 +2,34 @@ import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Table, TableHeader, TableRow, TableData } from "./styled";
 import { editUser } from "../api";
+import { User } from "../types";
 
-function UsersList({ users }) {
-  const [edit, setEdit] = useState({ id: null, field: "", value: "" });
+interface UsersListProps {
+  users: User[];
+}
+
+interface EditState {
+  id: number | null;
+  field: keyof User | "";
+  value: string;
+}
+
+function UsersList({ users }: UsersListProps) {
+  const [edit, setEdit] = useState<EditState>({
+    id: null,
+    field: "",
+    value: "",
+  });
   const queryClient = useQueryClient();
 
-  const mutation = useMutation({
-    mutationFn: ({ id, updated }) => editUser(id, updated),
+  const mutation = useMutation<
+    User,
+    Error,
+    { id: number | null; updated: Partial<User> }
+  >({
+    mutationFn: ({ id, updated }) => editUser(id as number, updated),
     onSuccess: (data) => {
-      queryClient.setQueryData(["users"], (old) =>
+      queryClient.setQueryData<User[]>(["users"], (old = []) =>
         old.map((user) => (user.id === data.id ? data : user))
       );
       setEdit({ id: null, field: "", value: "" });
@@ -22,14 +41,16 @@ function UsersList({ users }) {
     mutation.mutate({ id: edit.id, updated: { [edit.field]: edit.value } });
   };
 
-  const renderCell = (user, field) => {
+  const renderCell = (user: User, field: keyof User) => {
     const isEditing = edit.id === user.id && edit.field === field;
     if (!isEditing)
       return (
         <span
-          onClick={() => setEdit({ id: user.id, field, value: user[field] })}
+          onClick={() =>
+            setEdit({ id: user.id, field, value: String(user[field]) })
+          }
         >
-          {user[field]}
+          {String(user[field])}
         </span>
       );
 
@@ -81,11 +102,13 @@ function UsersList({ users }) {
         {users.map((user) => (
           <TableRow key={user.id}>
             <TableData>{user.id}</TableData>
-            {["name", "email", "gender", "status"].map((fieldName) => (
-              <TableData key={fieldName}>
-                {renderCell(user, fieldName)}
-              </TableData>
-            ))}
+            {(["name", "email", "gender", "status"] as (keyof User)[]).map(
+              (fieldName) => (
+                <TableData key={fieldName}>
+                  {renderCell(user, fieldName)}
+                </TableData>
+              )
+            )}
           </TableRow>
         ))}
       </tbody>

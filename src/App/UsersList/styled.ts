@@ -6,7 +6,9 @@ export const Table = styled.table`
   margin: 0 auto;
 `;
 
-export const TableRow = styled.tr`
+export const TableRow = styled.tr<{
+  $header?: Boolean;
+}>`
   border: 1px solid grey;
   font-size: large;
 
